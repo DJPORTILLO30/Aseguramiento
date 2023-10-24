@@ -5,8 +5,8 @@ const taskController = require('../controllers/task');
 
 
 router.get('/users', userController.getUsers);
-router.post('/users', userController.createUser);
-
+router.post('/register', userController.createUser);
+router.post('/login', userController.login);
 
 
 router.get('/tasks', taskController.getTasks);

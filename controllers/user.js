@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.getUsers = async (req, res) => {
     try {
@@ -19,10 +20,13 @@ exports.createUser = async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
 
-        newUser.password = hashedPassword; 
+        newUser.password = hashedPassword;
         await newUser.save();
 
-        res.status(201).json({ message: 'Usuario creado exitosamente', user: newUser });
+        // Generar un token JWT después de registrar al usuario
+        const token = jwt.sign({ userId: newUser._id }, 'tu_secreto_secreto', { expiresIn: '1h' });
+
+        res.status(201).json({ message: 'Usuario creado exitosamente', user: newUser, token });
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el usuario', error });
     }
@@ -46,10 +50,10 @@ exports.getUserById = async (req, res) => {
 //Login Añadido
 
 exports.login = async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(401).json({ message: 'Credenciales inválidas' });
@@ -61,7 +65,10 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Credenciales inválidas' });
         }
 
-        res.status(200).json({ message: 'Inicio de sesión exitoso' });
+        // Generar un token JWT al iniciar sesión
+        const token = jwt.sign({ userId: user._id }, 'tu_secreto_secreto', { expiresIn: '1h' });
+
+        res.status(200).json({ message: 'Inicio de sesión exitoso', token });
     } catch (error) {
         res.status(500).json({ message: 'Error al iniciar sesión', error });
     }

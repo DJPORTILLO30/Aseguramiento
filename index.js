@@ -4,15 +4,20 @@ const userRoutes = require('./routes/routes');
 const app = express();
 const cors = require('cors');
 
+// Configura CORS para permitir solicitudes desde http://localhost:4200
+app.use(cors({
+  origin: 'http://localhost:4200',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Habilita el envío de cookies u otras credenciales
+}));
+
 app.use(express.json());
 
+app.use('/', userRoutes);
 
-app.use('/api', userRoutes);
+connection();
 
-
-app.use(cors());
-
-
-app.listen(3000, () => {
-  console.log('Servidor iniciado en el puerto 3000');
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Servidor iniciado en el puerto ${port}`);
 });
