@@ -6,7 +6,7 @@ const cors = require('cors');
 
 // Configura CORS para permitir solicitudes desde http://localhost:4200
 app.use(cors({
-  origin: 'https://magenta-snickerdoodle-9a0af1.netlify.app/',
+  origin: 'https://magenta-snickerdoodle-9a0af1.netlify.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // Habilita el envío de cookies u otras credenciales
 }));
