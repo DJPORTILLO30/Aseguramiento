@@ -3,7 +3,7 @@ const Task = require('../models/task');
 exports.getTasks = async (req, res) => {
     try {
         // Obtén el ID del usuario de la solicitud. Esto asume que el ID del usuario se encuentra en req.userId, que debe ser establecido durante la autenticación.
-        const userId = req.userId;
+        const userId = req.body.userId;
 
         // Consulta todas las tareas que coincidan con el userId
         const tasks = await Task.find({ userId });
@@ -17,7 +17,7 @@ exports.getTasks = async (req, res) => {
 exports.createTask = async (req, res) => {
     try {
         // Obtén el ID del usuario de la solicitud. Esto asume que el ID del usuario se encuentra en req.userId, que debe ser establecido durante la autenticación.
-        const userId = req.userId;
+        const userId = req.body.userId;
         
         // Crea la nueva tarea con el userId asignado.
         const newTask = new Task({
