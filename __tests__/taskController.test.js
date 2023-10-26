@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
-const Task = require('../models/task');  // Importa el modelo
+const Task = require('../models/task');
+const User = require('../models/user'); // Import the User model
+
 const {
   getTasks,
   createTask,
   getTaskById
-} = require('../controllers/task');  // Importa los controladores
+} = require('../controllers/task');
 
-// Conecta a la base de datos antes de ejecutar las pruebas
 beforeAll(async () => {
   await mongoose.connect('mongodb+srv://dsolorzanom:Devin01@cluster0.ifgcnkc.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
@@ -14,35 +15,42 @@ beforeAll(async () => {
   });
 });
 
-// Desconecta de la base de datos después de ejecutar las pruebas
 afterAll(async () => {
   await mongoose.disconnect();
 });
 
 describe('Task Controller Tests', () => {
-  // Define una tarea de prueba para usar en las pruebas
   let testTask;
+  let testUser;
 
   beforeAll(async () => {
-    // Crea una tarea de prueba
+    // Create a test user
+    testUser = new User({
+      username: 'testuser',
+      password: 'testpassword',
+      // Add any other required user fields
+    });
+    await testUser.save();
+
+    // Create a test task
     testTask = new Task({
       title: 'Test Task',
       details: 'This is a test task',
       dueDate: new Date(),
       priority: 'alta',
       labels: ['Test'],
-      userId: 123,
+      userId: testUser._id, // Use the _id of the test user
     });
     await testTask.save();
   });
 
   afterAll(async () => {
-    // Elimina la tarea de prueba después de las pruebas
     await Task.findByIdAndRemove(testTask._id);
+    await User.findByIdAndRemove(testUser._id); // Remove the test user as well
   });
 
   it('getTasks should return a list of tasks', async () => {
-    const req = {};
+    const req = { userId: testUser._id }; // Set the userId to the test user's _id
     const res = {
       status: jest.fn(() => res),
       json: jest.fn(),
@@ -62,8 +70,8 @@ describe('Task Controller Tests', () => {
         dueDate: new Date(),
         priority: 'alta',
         labels: ['New'],
-        userId: 456,
       },
+      userId: testUser._id, // Use the test user's _id
     };
     const res = {
       status: jest.fn(() => res),
