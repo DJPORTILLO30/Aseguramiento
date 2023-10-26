@@ -6,10 +6,10 @@ const cors = require('cors');
 
 
 app.use(cors({
-  origin: 'https://davinderpro01.github.io',
+  origin: ['https://davinderpro01.github.io', 'http://localhost:4200'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // Habilita el envío de cookies u otras credenciales
-}));
+}));;
 
 app.use(express.json());
 
