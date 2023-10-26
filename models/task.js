@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 
 const taskSchema = new mongoose.Schema({
-    _id: Number,
     title: {
         type: String,
         required: true
@@ -20,19 +19,13 @@ const taskSchema = new mongoose.Schema({
         enum: ['alta', 'media', 'baja'],
         required: true
     },
-    labels: [String],  
-    completed: {
-        type: Boolean,
-        default: false  
-    },
     createdAt: {
         type: Date,
-        default: Date.now  
+        default: Date.now
     },
-    updatedAt: Date,  
     userId: {
-        type: Number,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     }
 });
 
