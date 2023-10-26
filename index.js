@@ -5,8 +5,14 @@ const app = express();
 const cors = require('cors');
 
 
+app.use(cors({
+  origin: 'https://davinderpro01.github.io/MyTask',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Habilita el envío de cookies u otras credenciales
+}));
+
 app.use(express.json());
-app.use(cors());
+
 
 
 connection();
