@@ -11,7 +11,7 @@ router.post('/login', userController.login);
 router.get('/perfil', validarToken, userController.perfil);
 
 
-router.get('/tasks', taskController.getTasks);
+router.post('/geTtasks', taskController.getTasks);
 router.post('/tasks', taskController.createTask);
 router.get('/tasks/:id', taskController.getTaskById);
 router.put('/tasks/:id', taskController.updateTask);
